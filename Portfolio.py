@@ -17,6 +17,11 @@ def write_data(file_path, shares, average_cost):
     with open(file_path, "w") as file:
         file.write(f"{shares}\n{average_cost}\n")
 
+# Resets data file to 0 shares and 0 average cost
+def reset(file_path):
+    with open(file_path, "w") as file:
+        file.write("0\n0\n")
+
 # User inputs: shares bought and at what average cost
 def inputs():
     print("Shares Bought: ")
@@ -44,3 +49,4 @@ if __name__ == "__main__":
     
     write_data(file_path, shares + new_shares, new_average_cost)
     print(f"Updated Average Cost: {new_average_cost}")
+    # reset(file_path)
