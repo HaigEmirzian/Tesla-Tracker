@@ -1,4 +1,8 @@
 import os
+import requests
+from dotenv import load_dotenv
+import finnhub
+from babel.numbers import format_currency
 
 # Reads data from data file
 def read_data(file_path):
@@ -27,7 +31,7 @@ def inputs():
     print("Shares Bought: ")
     shares_inputted = int(input())
     
-    print("Average cost: ")
+    print("Average Cost: ")
     average_cost_inputted = float(input())
 
     return shares_inputted, average_cost_inputted
@@ -40,13 +44,41 @@ def calculate_average_cost(total_shares, total_value, new_shares, new_cost):
         return 0
     return updated_value / updated_shares
 
+def portfolio_value(file_path):
+    load_dotenv()
+    FINNHUB_API_KEY = os.getenv('FINNHUB_API_KEY')
+    finnhub_client = finnhub.Client(FINNHUB_API_KEY)
+    stock_quote = int(finnhub_client.quote('TSLA')["c"])
+    shares, average_cost = read_data(file_path)
+    return shares * stock_quote
+
 if __name__ == "__main__":
     file_path = "portfolio_data.txt"
-    shares, average_cost = read_data(file_path)
-
-    new_shares, new_cost = inputs()
-    new_average_cost = calculate_average_cost(shares, shares * average_cost, new_shares, new_cost)
     
-    write_data(file_path, shares + new_shares, new_average_cost)
-    print(f"Updated Average Cost: {new_average_cost}")
-    # reset(file_path)
+    while True:
+        stdin = input('''
+Add Shares: a\n
+View Portfolio Value: v\n
+Reset Portfolio: r\n
+Quit: q\n\n''')
+        # Add shares
+        if stdin == "a": 
+            shares, average_cost = read_data(file_path)
+            new_shares, new_cost = inputs()
+            new_average_cost = calculate_average_cost(shares, shares * average_cost, new_shares, new_cost)
+            write_data(file_path, shares + new_shares, new_average_cost)
+            print(f"Updated Average Cost: {new_average_cost}")
+            break
+        # View Portfolio Value
+        elif stdin == "v":
+            def format_dollar(value):
+                return format_currency(value, 'USD', locale='en_US')
+            print("Portfolio Value: ", f"{format_dollar(portfolio_value(file_path))}")
+            break
+        # Reset portfolio
+        elif stdin == "r":
+            reset(file_path)
+            break
+        # Quit otherwise
+        else:
+            break
