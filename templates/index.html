@@ -1,14 +1,27 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Portfolio Value</title>
+        <title>Tesla Tracker</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content = "IE=edge"> 
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@50&display=swap" rel="stylesheet">
     </head> 
    
     <body>
+        <div class="guide-line horizontal top"></div>
+        <div class="guide-line horizontal bottom"></div>
+        <!-- Vertical Lines -->
+        <div class="guide-line vertical left"></div>
+        <div class="guide-line vertical right"></div>
+
+        <div class = "navbar">
+            <a href = "index.html">Portfolio</a>
+            <a href = "thesis.html">Thesis</a>
+            <a href = "videos.html">Videos</a>
+        </div>
+
         <div class="portfolio-value">
             {{ portfolio_value }}
         </div>

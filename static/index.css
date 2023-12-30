@@ -1,6 +1,54 @@
-body { 
-    font-family: Arial, sans-serif; text-align: center; 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    /* background-color: #2a3f5d; */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Open Sans', sans-serif;
+    background-image: url('/static/images/cybertruck_background_photo.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 0px -10px;
 }
-.portfolio-value { 
-    font-size: 48px; margin-top: 50px; 
+
+body::after {
+    content: '';
+    flex-grow: 1;
+}
+
+.portfolio-value {
+    flex-grow: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100px;
+    padding-top: 60px;
+}
+
+.navbar {
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.navbar a {
+    position: relative;
+    text-align: center;
+    color: white;
+    padding: 14px 30px;
+    text-decoration: none;
+    font-size: 23px;
+}
+
+.navbar a:hover {
+    background-color: #1A1A1A;
+    color: white;
+    border-radius: 11px;
 }
