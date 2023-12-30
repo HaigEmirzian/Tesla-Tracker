@@ -1,8 +1,26 @@
 import os
+import sys
 import requests
 from dotenv import load_dotenv
 import finnhub
 from babel.numbers import format_currency
+from flask import Flask, render_template
+
+# Store share and average cost data
+file_path = "portfolio_data.txt"
+
+# Hosts Flask app
+app = Flask(__name__)
+@app.route('/')
+def index():
+    # Call your function to get the portfolio value
+    value = format_dollar(portfolio_value(file_path))
+    # Pass the value to your HTML template
+    return render_template('index.html', portfolio_value=value)
+
+# Format portfolio value
+def format_dollar(value):
+    return format_currency(value, 'USD', locale='en_US')
 
 # Reads data from data file
 def read_data(file_path):
@@ -44,41 +62,44 @@ def calculate_average_cost(total_shares, total_value, new_shares, new_cost):
         return 0
     return updated_value / updated_shares
 
+# Calculates the portfolio value
 def portfolio_value(file_path):
     load_dotenv()
     FINNHUB_API_KEY = os.getenv('FINNHUB_API_KEY')
-    finnhub_client = finnhub.Client(FINNHUB_API_KEY)
+    finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
     stock_quote = int(finnhub_client.quote('TSLA')["c"])
     shares, average_cost = read_data(file_path)
     return shares * stock_quote
 
 if __name__ == "__main__":
-    file_path = "portfolio_data.txt"
-    
-    while True:
-        stdin = input('''
-Add Shares: a\n
-View Portfolio Value: v\n
-Reset Portfolio: r\n
-Quit: q\n\n''')
-        # Add shares
-        if stdin == "a": 
-            shares, average_cost = read_data(file_path)
-            new_shares, new_cost = inputs()
-            new_average_cost = calculate_average_cost(shares, shares * average_cost, new_shares, new_cost)
-            write_data(file_path, shares + new_shares, new_average_cost)
-            print(f"Updated Average Cost: {new_average_cost}")
-            break
-        # View Portfolio Value
-        elif stdin == "v":
-            def format_dollar(value):
-                return format_currency(value, 'USD', locale='en_US')
-            print("Portfolio Value: ", f"{format_dollar(portfolio_value(file_path))}")
-            break
-        # Reset portfolio
-        elif stdin == "r":
-            reset(file_path)
-            break
-        # Quit otherwise
-        else:
-            break
+    # Runs the CLI code, else it will just run the Flask app
+    if len(sys.argv) > 1 and sys.argv[1] == 'cli':
+        while True:
+            stdin = input('''
+Add Shares: a
+View Portfolio Value: v
+Reset Portfolio: r
+Quit: q
+Enter your choice: ''')
+
+            if stdin.lower() == "a": 
+                shares, average_cost = read_data(file_path)
+                new_shares, new_cost = inputs()
+                new_average_cost = calculate_average_cost(shares, shares * average_cost, new_shares, new_cost)
+                write_data(file_path, shares + new_shares, new_average_cost)
+                print(f"Updated Average Cost: {new_average_cost}")
+                break
+            elif stdin.lower() == "v":
+                print("Portfolio Value: ", format_dollar(portfolio_value(file_path)))
+                break
+            elif stdin.lower() == "r":
+                reset(file_path)
+                print("Portfolio has been reset.")
+                break
+            elif stdin.lower() == "q":
+                print("Exiting program.")
+                break
+            else:
+                print("Invalid input. Please try again.")
+    else:
+        app.run(debug=True)
