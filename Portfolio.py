@@ -4,19 +4,35 @@ import requests
 from dotenv import load_dotenv
 import finnhub
 from babel.numbers import format_currency
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 
 # Store share and average cost data
 file_path = "portfolio_data.txt"
 
 # Hosts Flask app
 app = Flask(__name__)
+
+# Route for home page
 @app.route('/')
 def index():
-    # Call your function to get the portfolio value
-    value = format_dollar(portfolio_value(file_path))
-    # Pass the value to your HTML template
+    value = portfolio_value(file_path)
     return render_template('index.html', portfolio_value=value)
+
+# Route for thesis page
+@app.route('/thesis')
+def thesis():
+    return render_template('thesis.html')
+
+# Route for videos page
+@app.route('/videos')
+def videos():
+    return render_template('videos.html')
+
+# Route for portfolio updates every 2 seconds
+@app.route('/get_portfolio_value')
+def get_portfolio_value():
+    updated_portfolio_value = portfolio_value(file_path)
+    return jsonify({'portfolio_value': updated_portfolio_value})
 
 # Format portfolio value
 def format_dollar(value):
@@ -69,7 +85,7 @@ def portfolio_value(file_path):
     finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
     stock_quote = int(finnhub_client.quote('TSLA')["c"])
     shares, average_cost = read_data(file_path)
-    return shares * stock_quote
+    return format_dollar(shares * stock_quote)
 
 if __name__ == "__main__":
     # Runs the CLI code, else it will just run the Flask app
@@ -90,7 +106,7 @@ Enter your choice: ''')
                 print(f"Updated Average Cost: {new_average_cost}")
                 break
             elif stdin.lower() == "v":
-                print("Portfolio Value: ", format_dollar(portfolio_value(file_path)))
+                print("Portfolio Value: ", portfolio_value(file_path))
                 break
             elif stdin.lower() == "r":
                 reset(file_path)
