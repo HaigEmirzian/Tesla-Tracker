@@ -9,6 +9,9 @@ from flask import Flask, jsonify, render_template
 # Store share and average cost data
 file_path = "portfolio_data.txt"
 
+# Load environment variables
+load_dotenv()
+
 # Hosts Flask app
 app = Flask(__name__)
 
@@ -23,10 +26,15 @@ def index():
 def thesis():
     return render_template('thesis.html')
 
-# Route for videos page
+# Route for videos page and video population
 @app.route('/videos')
 def videos():
-    return render_template('videos.html')
+    api_key = os.getenv('YOUTUBE_API_KEY')
+    channel_id = os.getenv('YOUTUBE_CHANNEL_ID')
+    url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults=4&type=video'
+    response = requests.get(url)
+    videos = response.json().get('items', [])
+    return render_template('videos.html', videos=videos)
 
 # Route for portfolio updates every 2 seconds
 @app.route('/get_portfolio_value')
@@ -80,7 +88,6 @@ def calculate_average_cost(total_shares, total_value, new_shares, new_cost):
 
 # Calculates the portfolio value
 def portfolio_value(file_path):
-    load_dotenv()
     FINNHUB_API_KEY = os.getenv('FINNHUB_API_KEY')
     finnhub_client = finnhub.Client(api_key=FINNHUB_API_KEY)
     stock_quote = int(finnhub_client.quote('TSLA')["c"])

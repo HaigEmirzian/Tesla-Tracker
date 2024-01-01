@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Tesla Tracker</title>
-        <link rel="stylesheet" href="{{ url_for('static', filename='../static/css/videos.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/videos.css') }}">
     </head>
     <body>
         <div class = "navbar">
@@ -13,5 +13,17 @@
             <a href="{{ url_for('thesis') }}">Thesis</a>
             <a href="{{ url_for('videos') }}">Videos</a>
         </div>
+        
+        <div class="container">
+            <div class="video-grid">
+                <!-- Video boxes will be populated here -->
+                {% for video in videos %}
+                    <div class="video-box">
+                        <!-- Assuming 'video' object has 'id' and 'snippet' with 'thumbnails' -->
+                        <img src="{{ video.snippet.thumbnails.high.url }}" alt="{{ video.snippet.title }}">
+                    </div>
+                {% endfor %}
+            </div>
+        </div>           
     </body>
 </html>

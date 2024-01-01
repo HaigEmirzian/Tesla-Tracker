@@ -14,6 +14,11 @@ body::after {
     flex-grow: 1;
 }
 
+body {
+    display: flex;
+    flex-direction: column;
+  }
+
 .navbar {
     width: 100%;
     overflow: hidden;
@@ -38,4 +43,38 @@ body::after {
     background-color: #253551;
     color: white;
     border-radius: 11px;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    gap: 80px; /* Increased gap between boxes */
+    padding: 5%; /* Space around the entire grid */
+    justify-content: center;
+    align-items: start;
+    max-width: 1200px; /* Or the max-width you prefer */
+    margin: auto; /* This will center your grid on the page */
+}
+
+.video-box {
+    width: 320px; /* Adjust width as necessary */
+    height: 180px; /* Adjust height as necessary */
+    position: relative; /* Position relative if you want to absolutely position elements inside */
+    overflow: hidden; /* Ensure no content spills out */
+  }
+  
+  .video-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the box without stretching */
+  }
+  
+.container {
+    flex-grow: 1; /* Takes up all available space */
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+    align-items: center; /* Center children horizontally */
+    justify-content: flex-start; /* Align content to the top */
+    padding-top: 100px; /* Increase this value to move the grid down */
+    padding-bottom: 50px; /* Adjust bottom padding if needed */
 }
