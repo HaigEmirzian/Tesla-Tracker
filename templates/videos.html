@@ -19,8 +19,14 @@
                 <!-- Video boxes will be populated here -->
                 {% for video in videos %}
                     <div class="video-box">
-                        <!-- Assuming 'video' object has 'id' and 'snippet' with 'thumbnails' -->
-                        <img src="{{ video.snippet.thumbnails.high.url }}" alt="{{ video.snippet.title }}">
+                        <a href="https://www.youtube.com/watch?v={{ video.id.videoId }}" target="_blank">
+                            <img src="{{ video.snippet.thumbnails.high.url }}" alt="{{ video.snippet.title }}">
+                        </a>
+                        <div class="video-title">
+                            <a href="https://www.youtube.com/watch?v={{ video.id.videoId }}" target="_blank">
+                                {{ video.snippet.title }}
+                            </a>
+                        </div>
                     </div>
                 {% endfor %}
             </div>

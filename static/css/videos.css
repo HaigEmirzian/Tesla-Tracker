@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'YouTube Sans';
+    src: url('/static/fonts/YouTubeSansRegular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -48,7 +55,7 @@ body {
 .video-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* 2 columns */
-    gap: 80px; /* Increased gap between boxes */
+    gap: 20% 20%; /* Increased gap between boxes */
     padding: 5%; /* Space around the entire grid */
     justify-content: center;
     align-items: start;
@@ -60,7 +67,6 @@ body {
     width: 320px; /* Adjust width as necessary */
     height: 180px; /* Adjust height as necessary */
     position: relative; /* Position relative if you want to absolutely position elements inside */
-    overflow: hidden; /* Ensure no content spills out */
   }
   
   .video-box img {
@@ -77,4 +83,21 @@ body {
     justify-content: flex-start; /* Align content to the top */
     padding-top: 100px; /* Increase this value to move the grid down */
     padding-bottom: 50px; /* Adjust bottom padding if needed */
+}
+
+.video-title {
+    font-family: 'YouTube Sans', sans-serif; /* Add the font-family here */
+    color: white;
+    text-align: center;
+    margin-top: 8px;
+    font-size: 16px;
+}
+
+.video-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.video-title a:hover {
+    text-decoration: none;
 }
