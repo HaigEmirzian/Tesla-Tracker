@@ -14,6 +14,10 @@
             <a href="{{ url_for('videos') }}">Videos</a>
         </div>
 
+        <video width="1280" height="720" autoplay muted loop>
+            <source src="{{ url_for('static', filename='/videos/fsd_clip.webm') }}" type="video/webm">
+        </video>
+
         <div class="thesis-button">
             <a href="{{ url_for('download_thesis') }}" class="btn-download">Download Thesis</a>
         </div>
