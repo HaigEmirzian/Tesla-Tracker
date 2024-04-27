@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 import finnhub
 from babel.numbers import format_currency
-from flask import Flask, jsonify, render_template
+from flask import Flask, jsonify, render_template, send_file
 
 # Store share and average cost data
 file_path = "portfolio_data.txt"
@@ -25,6 +25,15 @@ def index():
 @app.route('/thesis')
 def thesis():
     return render_template('thesis.html')
+
+# Get current path for later construction of thesis.pdf path
+static_dir = os.path.join(os.path.dirname(__file__), 'static')
+
+# Route for thesis download
+@app.route('/download_thesis')
+def download_thesis():
+    thesis_path = os.path.join(static_dir, 'css', 'pdf', 'thesis.pdf')
+    return send_file(thesis_path, as_attachment=True)
 
 # Route for videos page and video population
 @app.route('/videos')
