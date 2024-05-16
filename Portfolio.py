@@ -32,7 +32,7 @@ static_dir = os.path.join(os.path.dirname(__file__), 'static')
 # Route for thesis download
 @app.route('/download_thesis')
 def download_thesis():
-    thesis_path = os.path.join(static_dir, 'css', 'pdf', 'thesis.pdf')
+    thesis_path = os.path.join(static_dir, 'css', 'pdf', 'Tesla_Investment_Thesis.pdf')
     return send_file(thesis_path, as_attachment=True)
 
 # Route for videos page and video population
