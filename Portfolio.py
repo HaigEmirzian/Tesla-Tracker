@@ -134,4 +134,4 @@ Enter your choice: ''')
             else:
                 print("Invalid input. Please try again.")
     else:
-        app.run(debug=False, host='0.0.0.0')
+        app.run(debug=True)
